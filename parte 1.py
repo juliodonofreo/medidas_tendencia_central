@@ -70,6 +70,18 @@ def terceiro_quartil(conjunto):
     return quartil
 
 
+def iqr(conjunto):
+    return terceiro_quartil(conjunto) - primeiro_quartil(conjunto)
+
+
+def corte_superior(conjunto):
+    return round(terceiro_quartil(conjunto) + 1.5 * iqr(conjunto), 2)
+
+
+def corte_inferior(conjunto):
+    return round(primeiro_quartil(conjunto) - 1.5 * iqr(conjunto), 2)
+
+
 lista = ler_arquivo('dados')
 print(lista)
 print("média: ", media(lista))
@@ -80,3 +92,5 @@ print("moda: ", moda(lista))
 print("1º quartil: ", primeiro_quartil(lista))
 print("2º quartil: ", mediana(lista))
 print("3º quartil: ", terceiro_quartil(lista))
+print("corte superior: ", corte_superior(lista))
+print("corte inferior: ", corte_inferior(lista))
