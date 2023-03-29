@@ -94,3 +94,4 @@ print("2º quartil: ", mediana(lista))
 print("3º quartil: ", terceiro_quartil(lista))
 print("corte superior: ", corte_superior(lista))
 print("corte inferior: ", corte_inferior(lista))
+
