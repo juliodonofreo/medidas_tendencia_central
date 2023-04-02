@@ -1,12 +1,9 @@
-import csv
-
-
 # utlizei o site https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php para testar os valores
 
 def ler_arquivo(nome):
     with open(nome + '.txt', 'r', newline='') as arquivo:
-        dados = csv.reader(arquivo, delimiter='\n')
-        dados = list(map(lambda x: float(x[0].replace(',', '.')), dados))
+        dados = arquivo.readlines()
+        dados = list(map(lambda x: float(x.replace(',', '.')), dados))
         return dados
 
 
@@ -15,7 +12,7 @@ def media(conjunto):
     for i in conjunto:
         soma += i
 
-    media = round(soma / len(conjunto), 3)
+    media = soma / len(conjunto)
     return media
 
 
@@ -31,9 +28,10 @@ def mediana(conjunto):
     meio_conjunto = len(conjunto) / 2
 
     if len(conjunto) % 2 == 0:
-        somaMedianas = conjunto[int(meio_conjunto)] + conjunto[int(meio_conjunto) - 1]
-        return round(somaMedianas / 2, 3)
-    return round(conjunto[int(meio_conjunto)], 3)
+        soma_medianas = conjunto[int(meio_conjunto)] + conjunto[int(meio_conjunto) - 1]
+        return soma_medianas / 2
+    else:
+        return conjunto[int(meio_conjunto)]
 
 
 def maior(conjunto):
@@ -70,28 +68,22 @@ def terceiro_quartil(conjunto):
     return quartil
 
 
-def iqr(conjunto):
-    return terceiro_quartil(conjunto) - primeiro_quartil(conjunto)
+def saida(conjunto):
+    with open('saida1.txt', 'w', encoding='utf-8') as arquivo:
+        arquivo.write(f"média: {round(media(conjunto), 3)}\n")
+        arquivo.write(f"mediana: {round(mediana(conjunto), 3)}\n")
+        arquivo.write(f"maior: {maior(conjunto)}\n")
+        arquivo.write(f"menor: {menor(conjunto)}\n")
+        modas = moda(conjunto)
+        if len(modas) == 1:
+            arquivo.write(f"moda: {modas[0]}\n")
+        else:
+            for i, valorModa in enumerate(modas):
+                arquivo.write(f"moda {i + 1}: {valorModa}\n")
+        arquivo.write(f"1º quartil: {round(primeiro_quartil(lista), 3)}\n")
+        arquivo.write(f"2º quartil: {round(mediana(lista), 3)}\n")
+        arquivo.write(f"3º quartil: {round(terceiro_quartil(lista), 3)}\n")
 
 
-def corte_superior(conjunto):
-    return round(terceiro_quartil(conjunto) + 1.5 * iqr(conjunto), 2)
-
-
-def corte_inferior(conjunto):
-    return round(primeiro_quartil(conjunto) - 1.5 * iqr(conjunto), 2)
-
-
-lista = ler_arquivo('dados')
-print(lista)
-print("média: ", media(lista))
-print("mediana: ", mediana(lista))
-print("maior:", maior(lista))
-print("menor: ", menor(lista))
-print("moda: ", moda(lista))
-print("1º quartil: ", primeiro_quartil(lista))
-print("2º quartil: ", mediana(lista))
-print("3º quartil: ", terceiro_quartil(lista))
-print("corte superior: ", corte_superior(lista))
-print("corte inferior: ", corte_inferior(lista))
-
+lista = ler_arquivo('dados3')
+saida(lista)
